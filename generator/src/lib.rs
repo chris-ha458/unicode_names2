@@ -39,7 +39,7 @@ fn get_table_data(unicode_data: &'static str) -> TableData {
         Some((c, name))
     }
 
-    let mut iter = unicode_data.split('\n');
+    let mut iter = unicode_data.lines();
 
     let mut codepoint_names = vec![];
     let mut cjk_ideograph_ranges = vec![];
@@ -125,7 +125,7 @@ fn write_cjk_ideograph_ranges(ctxt: &mut Context, ranges: &[(char, char)]) {
 fn create_lexicon_and_offsets(
     mut codepoint_names: Vec<(char, &str)>,
 ) -> (String, Vec<(usize, Vec<u8>, usize)>) {
-    codepoint_names.sort_by(|a, b| a.1.len().cmp(&b.1.len()).reverse());
+    codepoint_names.sort_unstable_by(|a, b| a.1.len().cmp(&b.1.len()).reverse());
 
     // a trie of all the suffixes of the data,
     let mut t = trie::Trie::new();
